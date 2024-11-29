@@ -1,0 +1,26 @@
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: "http://localhost/wordpress"
+            browser: chrome
+        - \Codeception\Module\Asserts
+
+# Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
+step_decorators:
+    - Codeception\Step\ConditionalAssertion
+    - Codeception\Step\TryTo
+    - Codeception\Step\Retry
+
+
+# docoker
+
+# actor: AcceptanceTester
+# modules:
+#   enabled:
+#     - WebDriver:
+#         url: http://wordpress               # WordPress service in the Docker network
+#         host: selenium                      # Selenium service
+#         port: 4444                          # Selenium port
+#         browser: chrome                     # Browser to use
+#     - \Codeception\Module\Asserts

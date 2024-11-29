@@ -1,0 +1,16 @@
+actor: FunctionalTester
+modules:
+  enabled:
+    - WPBrowser:
+        url: 'http://localhost/wordpress'
+        adminUsername: 'root'
+        adminPassword: 'Pass1234@'
+        adminPath: '/wp-admin'
+    - Db:
+        dsn: 'mysql:host=127.0.0.1;dbname=wordpress_db'
+        user: 'rana'                   # Ensure this matches the user with access
+        password: 'Pass1234@'  # Ensure this matches the password for the user rana
+        dump: 'tests/_data/dump.sql'
+        populate: false
+        cleanup: false
+    - Asserts:

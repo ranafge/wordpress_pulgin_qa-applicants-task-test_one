@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8000:80"  # Exposes WordPress on http://localhost:8000
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_DB_USER: rana
+      WORDPRESS_DB_PASSWORD: Pass1234@
+    volumes:
+      - ./wp-content:/var/www/html/wp-content  # Mounts WordPress content
+      - .:/var/www/html/wp-content/plugins/my_test_project  # Mounts your plugin project
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: rana
+      MYSQL_PASSWORD: Pass1234@
+      MYSQL_ROOT_PASSWORD: Pass1234@
+    volumes:
+      - db_data:/var/lib/mysql
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test  # Dockerfile for the test environment
+    depends_on:
+      - wordpress
+      - db
+      - selenium
+    volumes:
+      - .:/opt/project  # Mount your project directory
+    working_dir: /opt/project
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["vendor/bin/codecept run"]  # Runs tests by default; change as needed
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"  # Exposes Selenium on http://localhost:4444
+
+volumes:
+  db_data:
