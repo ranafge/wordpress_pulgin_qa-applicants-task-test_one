@@ -100,7 +100,7 @@ class UserFormSubmissionCest
     {
         $I->wantToTest('I want to check if the email address data is saved in the database.');
         $optionName = 'qa_test_options';
-        $optionData = $I->grabFromDatabase('wp_options', 'option_value', ['option_name' => $optionName]);
+        $optionData = $I->grabFromDatabase('wp_optionss', 'option_value', ['option_name' => $optionName]);
         $data = unserialize($optionData);
         $I->assertEquals("Test@admin.com", $data["qa_test_email"]);
         codecept_debug($data);
